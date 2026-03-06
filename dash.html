@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Real Estate Portal</title>
+
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.css" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/dash.css" />
+</head>
+<body>
+  <!-- AUTH -->
+  <div id="authPanel" class="auth hidden">
+    <div class="auth-box">
+      <div class="brand auth-brand">
+        <div class="logo"></div>
+        <div>
+          <div class="brand-title">Real Estate Portal</div>
+          <div class="brand-sub">Plataforma inmobiliaria premium</div>
+        </div>
+      </div>
+
+      <h2>Iniciar sesión</h2>
+      <input id="loginEmail" type="email" placeholder="Correo electrónico" />
+      <input id="loginPassword" type="password" placeholder="Contraseña" />
+      <button id="btnLogin" class="btn btn-primary btn-full">Entrar</button>
+      <div id="authMsg" class="auth-msg"></div>
+    </div>
+  </div>
+
+  <!-- APP -->
+  <div id="appShell" class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <div class="brand-title">Real Estate Portal</div>
+          <div class="brand-sub">Monterrey · Venta · Renta · CRM</div>
+        </div>
+      </div>
+
+      <div class="search-wrap">
+        <input
+          id="searchInput"
+          class="search-input"
+          placeholder="Buscar por zona, colonia, propiedad o dirección..."
+        />
+      </div>
+
+      <div class="top-actions">
+        <button id="btnAddDemo" class="btn btn-soft">+ Demo Listing</button>
+        <button id="btnSeedDemo" class="btn btn-soft">Cargar demo realista</button>
+        <button id="btnLogout" class="btn btn-ghost">Logout</button>
+      </div>
+    </header>
+
+    <main class="shell">
+      <!-- LEFT -->
+      <section class="panel left-panel">
+        <div class="panel-header sticky-head">
+          <div>
+            <div class="panel-title">Listings</div>
+            <div id="resultsCount" class="panel-subtitle">0 resultados</div>
+          </div>
+          <button class="btn btn-soft">Save Search</button>
+        </div>
+
+        <div class="filters sticky-filters">
+          <select id="filterListing">
+            <option value="all">For Sale / Rent</option>
+            <option value="sale">For Sale</option>
+            <option value="rent">For Rent</option>
+          </select>
+
+          <select id="filterType">
+            <option value="all">All Types</option>
+            <option value="house">Casa</option>
+            <option value="apartment">Departamento</option>
+            <option value="land">Terreno</option>
+            <option value="warehouse">Bodega</option>
+            <option value="industrial">Nave industrial</option>
+          </select>
+
+          <select id="filterPrice">
+            <option value="all">Any Price</option>
+            <option value="0-500000">$0 - $500k</option>
+            <option value="500000-2000000">$500k - $2m</option>
+            <option value="2000000-100000000">$2m+</option>
+          </select>
+        </div>
+
+        <div id="resultsList" class="results-list"></div>
+      </section>
+
+      <!-- CENTER -->
+      <section class="panel map-panel">
+        <div class="map-toolbar">
+          <select id="mapStyle">
+            <option value="streets">Streets</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+            <option value="satellite">Satellite</option>
+          </select>
+
+          <button id="btn3D" class="btn btn-soft">3D: OFF</button>
+        </div>
+
+        <div id="map"></div>
+      </section>
+
+      <!-- RIGHT -->
+      <aside class="right-column">
+        <section class="card premium-card detail-card">
+          <div class="card-header">
+            <span>Property Detail</span>
+            <span class="muted-label">Preview</span>
+          </div>
+          <div id="selectedCard" class="card-body empty-state">
+            Selecciona una propiedad para ver sus detalles completos.
+          </div>
+        </section>
+
+        <section class="card premium-card">
+  <div class="card-header">
+    <span>Nuevo Lead</span>
+    <span class="muted-label">Capture</span>
+  </div>
+  <div class="card-body lead-form">
+    <input id="leadName" type="text" placeholder="Nombre completo" />
+    <input id="leadPhone" type="text" placeholder="Teléfono" />
+    <input id="leadEmail" type="email" placeholder="Correo" />
+    <input id="leadBudget" type="text" placeholder="Presupuesto" />
+    <textarea id="leadNotes" placeholder="Notas o interés del cliente"></textarea>
+    <button id="btnCreateLead" class="btn btn-primary btn-full">Guardar lead</button>
+    <div id="leadMsg" class="mini-msg"></div>
+  </div>
+</section>
+
+        <section class="card premium-card">
+          <div class="card-header">
+            <span>Lead Capture</span>
+            <span class="muted-label">CRM</span>
+          </div>
+          <div class="card-body">
+            <div class="lead-mini">
+              <div class="lead-score good">Lead score 82</div>
+              <div class="lead-name">Cliente potencial activo</div>
+              <div class="lead-meta">Seguimiento recomendado en menos de 24h</div>
+            </div>
+
+            <div class="lead-actions">
+              <button class="btn btn-primary">Crear lead</button>
+              <button class="btn btn-ghost">WhatsApp</button>
+            </div>
+
+            <ul class="feature-list">
+              <li>Pipeline comercial</li>
+              <li>Seguimiento rápido</li>
+              <li>WhatsApp / Email</li>
+              <li>Próxima visita</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="card premium-card">
+          <div class="card-header">
+            <span>Leads Overview</span>
+            <span class="muted-label">KPIs</span>
+          </div>
+          <div class="card-body kpi-list">
+            <div class="kpi-row"><span>Active Leads</span><strong>12</strong></div>
+            <div class="kpi-row"><span>New Inquiries</span><strong>8</strong></div>
+            <div class="kpi-row"><span>Follow-ups</span><strong>5</strong></div>
+          </div>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.js"></script>
+  <script type="module" src="assets/js/dash.js"></script>
+</body>
+</html>
