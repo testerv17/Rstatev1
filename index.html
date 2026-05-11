@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Real Estate Portal</title>
+
+  <!-- Mapbox -->
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+
+<body>
+  <!-- Auth -->
+  <div id="authPanel" class="auth hidden">
+    <div class="auth-box">
+      <div class="brand"><div class="logo"></div> Real Estate Portal</div>
+      <h2>Login</h2>
+      <input id="loginEmail" type="email" placeholder="Email" />
+      <input id="loginPassword" type="password" placeholder="Password" />
+      <button id="btnLogin" class="btn btn-primary" style="width:100%;">Sign in</button>
+      <div id="authMsg" class="auth-msg"></div>
+      <p style="color:rgba(11,27,51,.65); margin-top:12px;">
+        Crea un usuario desde Supabase Auth (Email/Password) para entrar.
+      </p>
+    </div>
+  </div>
+
+  <!-- App -->
+  <div id="appShell">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo"></div>
+        <div>Real Estate Portal</div>
+      </div>
+
+      <div class="search">
+        <input id="searchInput" placeholder="Search..." />
+      </div>
+
+      <button id="btnAddDemo" class="btn">+ Demo Listing</button>
+      <button id="btnSeedDemo" class="btn">Cargar demo realista</button>
+      <button id="btnLogout" class="btn">Logout</button>
+    </div>
+
+    <div class="shell">
+      <!-- Left: Results -->
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <div style="font-weight:900;">Listings</div>
+            <div id="resultsCount" style="color:rgba(11,27,51,.65); font-size:13px;">—</div>
+          </div>
+          <button class="btn btn-ghost">Save Search</button>
+        </div>
+
+        <div class="filters">
+          <select id="filterListing">
+            <option value="all">For Sale / Rent</option>
+            <option value="sale">For Sale</option>
+            <option value="rent">For Rent</option>
+          </select>
+
+          <select id="filterType">
+            <option value="all">All Types</option>
+            <option value="house">House</option>
+            <option value="apartment">Apartment</option>
+            <option value="land">Land</option>
+          </select>
+
+          <select id="filterPrice">
+            <option value="all">Any Price</option>
+            <option value="0-500000">$0 - $500k</option>
+            <option value="500000-2000000">$500k - $2m</option>
+            <option value="2000000-100000000">$2m+</option>
+          </select>
+        </div>
+
+        <div id="resultsList" class="results"></div>
+      </div>
+
+      <!-- Center: Map -->
+      <div class="panel map-wrap">
+        <div class="map-toolbar">
+          <select id="mapStyle">
+            <option value="streets">Streets</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+            <option value="satellite">Satellite</option>
+          </select>
+
+          <button id="btn3D" class="btn">3D: OFF</button>
+        </div>
+
+        <div id="map"></div>
+      </div>
+
+      <!-- Right: CRM / Selected -->
+      <div class="right">
+        <div class="card">
+          <div class="card-h">
+            <div style="font-weight:900;">Selected</div>
+            <div style="color:rgba(11,27,51,.55); font-weight:800;">Preview</div>
+          </div>
+          <div id="selectedCard" class="card-b" style="color:rgba(11,27,51,.65);">
+            Selecciona una propiedad…
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-h">
+            <div style="font-weight:900;">Lead Capture</div>
+            <div style="color:rgba(11,27,51,.55); font-weight:800;">CRM</div>
+          </div>
+          <div class="card-b">
+            <div style="color:rgba(11,27,51,.65); line-height:1.4;">
+              Aquí conectamos:
+              <ul>
+                <li>Crear lead</li>
+                <li>Pipeline</li>
+                <li>WhatsApp / Email</li>
+              </ul>
+              (lo activamos en el siguiente sprint)
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-h">
+            <div style="font-weight:900;">Leads Overview</div>
+            <div style="color:rgba(11,27,51,.55); font-weight:800;">KPIs</div>
+          </div>
+          <div class="card-b" style="display:grid; gap:10px;">
+            <div style="display:flex; justify-content:space-between;">
+              <span>Active Leads</span><b>—</b>
+            </div>
+            <div style="display:flex; justify-content:space-between;">
+              <span>New Inquiries</span><b>—</b>
+            </div>
+            <div style="display:flex; justify-content:space-between;">
+              <span>Follow-ups</span><b>—</b>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.js"></script>
+  <script type="module" src="assets/js/app.js"></script>
+</body>
+</html>

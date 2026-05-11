@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Real Estate Portal Pro</title>
+
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.css" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/dash.css" />
+</head>
+<body>
+  <div id="authPanel" class="auth hidden">
+    <div class="auth-box">
+      <div class="auth-brand">
+        <div class="brand-mark"></div>
+        <div>
+          <div class="auth-title">Real Estate Portal</div>
+          <div class="auth-subtitle">Plataforma inmobiliaria premium</div>
+        </div>
+      </div>
+
+      <h2>Iniciar sesión</h2>
+      <input id="loginEmail" type="email" placeholder="Correo electrónico" />
+      <input id="loginPassword" type="password" placeholder="Contraseña" />
+      <button id="btnLogin" class="btn btn-primary btn-full">Entrar</button>
+      <div id="authMsg" class="auth-msg"></div>
+    </div>
+  </div>
+
+  <div id="appShell" class="app-shell">
+    <header class="topbar">
+      <div class="brand-block">
+        <div class="brand-mark"></div>
+        <div>
+          <div class="brand-title">Real Estate Portal</div>
+          <div class="brand-subtitle">Luxury CRM · Listings · Map Intelligence</div>
+        </div>
+      </div>
+
+      <div class="search-block">
+        <input id="searchInput" class="search-input" placeholder="Buscar por zona, colonia, propiedad o dirección..." />
+      </div>
+
+      <div class="actions-block">
+
+  <!-- Acción principal -->
+  <button id="btnOpenPropertyModal" class="btn btn-primary">
+    + Nueva propiedad
+  </button>
+
+  <!-- Navegación -->
+  <div class="nav-group">
+    <a href="followups.html" class="nav-link">Seguimiento</a>
+    <a href="dashboard-commercial.html" class="nav-link">Comercial</a>
+    <a href="leads.html" class="nav-link">Pipeline</a>
+  </div>
+
+  <!-- Usuario -->
+  <div class="user-menu">
+    <div id="userBadge" class="user-badge hidden"></div>
+    <button id="btnLogout" class="btn btn-ghost">Salir</button>
+  </div>
+
+</div>
+    </header>
+
+    <main class="dashboard-shell">
+      <aside class="listings-panel">
+        <div class="listings-header">
+          <div>
+            <div class="panel-title">Listings</div>
+            <div id="resultsCount" class="panel-subtitle">0 resultados</div>
+          </div>
+          <button class="btn btn-soft small">Save Search</button>
+        </div>
+
+        <div class="filters-bar">
+          <select id="filterListing">
+            <option value="all">Venta / Renta</option>
+            <option value="sale">Venta</option>
+            <option value="rent">Renta</option>
+          </select>
+
+          <select id="filterType">
+            <option value="all">Tipos</option>
+            <option value="house">Casa</option>
+            <option value="apartment">Departamento</option>
+            <option value="land">Terreno</option>
+            <option value="warehouse">Bodega</option>
+            <option value="industrial">Nave industrial</option>
+          </select>
+
+          <select id="filterPrice">
+            <option value="all">Precio</option>
+            <option value="0-500000">$0 - $500k</option>
+            <option value="500000-2000000">$500k - $2m</option>
+            <option value="2000000-100000000">$2m+</option>
+          </select>
+        </div>
+
+        <div id="resultsList" class="listings-scroll"></div>
+      </aside>
+
+      <section class="map-stage">
+        <div class="map-toolbar-glass">
+          <select id="mapStyle">
+            <option value="streets">Streets</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+            <option value="satellite">Satellite</option>
+          </select>
+
+          <button id="btn3D" class="btn btn-soft">3D: OFF</button>
+        </div>
+
+        <div id="map"></div>
+
+        <div id="selectedCard" class="floating-detail-card">
+          <div class="empty-detail">
+            Selecciona una propiedad para ver su detalle premium.
+          </div>
+        </div>
+
+        <button id="btnRestoreDetail" class="restore-detail-pill hidden">
+            Ver propiedad seleccionada
+        </button>
+      </section>
+    </main>
+  </div>
+
+  <div id="propertyModal" class="property-modal hidden">
+  <div class="property-modal-box">
+    <div class="property-modal-header">
+      <h2 id="propertyModalTitle">Nueva Propiedad</h2>
+      <button id="btnClosePropertyModal">×</button>
+    </div>
+
+    <div class="property-form-grid">
+      <input id="propTitle" placeholder="Título propiedad">
+      <input id="propPrice" type="number" placeholder="Precio">
+
+      <select id="propListingType">
+        <option value="sale">Venta</option>
+        <option value="rent">Renta</option>
+      </select>
+
+      <select id="propType">
+        <option value="house">Casa</option>
+        <option value="apartment">Departamento</option>
+        <option value="land">Terreno</option>
+        <option value="warehouse">Bodega</option>
+      </select>
+
+      <input id="propCity" placeholder="Ciudad">
+      <input id="propState" placeholder="Estado">
+
+      <input id="propAddress" placeholder="Dirección">
+
+      <input id="propBeds" type="number" placeholder="Recámaras">
+      <input id="propBaths" type="number" placeholder="Baños">
+      <input id="propSqft" type="number" placeholder="sqft">
+
+      <input id="propBroker" placeholder="Broker / Asesor">
+
+      <input id="propImage" type="file" accept="image/*" multiple>
+      <div id="propImagePreview" class="property-upload-preview"></div>
+
+      <input id="propLat" placeholder="Latitud" readonly>
+      <input id="propLng" placeholder="Longitud" readonly>
+
+
+      <textarea id="propDescription" placeholder="Descripción comercial"></textarea>
+    </div>
+
+     <div class="property-map-picker-wrap">
+       <div class="property-map-picker-title">Ubicación exacta</div>
+       <div id="propertyPickerMap" class="property-picker-map"></div>
+     </div>
+
+    <div id="propertyFormMsg" class="property-form-msg"></div>
+
+    <div class="property-modal-actions">
+      <button id="btnSaveProperty" class="btn btn-primary">Guardar propiedad</button>
+    </div>
+  </div>
+</div>
+
+<div id="galleryAdminModal" class="property-modal hidden">
+  <div class="property-modal-box">
+    <div class="property-modal-header">
+      <h2>Administrar galería</h2>
+      <button id="btnCloseGalleryAdmin">×</button>
+    </div>
+
+    <div class="gallery-admin-top">
+      <input id="galleryAdminInput" type="file" accept="image/*" multiple>
+      <button id="btnUploadGalleryImages" class="btn btn-primary">Agregar fotos</button>
+    </div>
+
+    <div id="galleryAdminMsg" class="property-form-msg"></div>
+    <div id="galleryAdminGrid" class="gallery-admin-grid"></div>
+  </div>
+</div>
+
+<div id="leadModal" class="property-modal hidden">
+  <div class="property-modal-box">
+    <div class="property-modal-header">
+      <h2>Lead de propiedad</h2>
+      <button id="btnCloseLeadModal">×</button>
+    </div>
+
+    <div class="property-form-grid">
+      <input id="leadFullName" placeholder="Nombre completo">
+      <input id="leadPhone" placeholder="Teléfono">
+
+      <input id="leadEmail" type="email" placeholder="Correo">
+      <input id="leadBudget" type="number" placeholder="Presupuesto">
+
+      <select id="leadStage">
+        <option value="nuevo">Nuevo</option>
+        <option value="contactado">Contactado</option>
+        <option value="visita">Visita</option>
+        <option value="oferta">Oferta</option>
+        <option value="cierre">Cierre</option>
+      </select>
+
+      <input id="leadFollowUp" type="datetime-local" placeholder="Seguimiento">
+      
+      <textarea id="leadNotes" placeholder="Notas del lead"></textarea>
+    </div>
+
+    <div id="leadFormMsg" class="property-form-msg"></div>
+
+    <div class="property-modal-actions">
+      <button id="btnSaveLead" class="btn btn-primary">Guardar lead</button>
+    </div>
+  </div>
+</div>
+
+<div id="leadListModal" class="property-modal hidden">
+  <div class="property-modal-box">
+    <div class="property-modal-header">
+      <h2>Leads de la propiedad</h2>
+      <button id="btnCloseLeadListModal">×</button>
+    </div>
+
+    <div class="gallery-admin-top">
+      <button id="btnOpenLeadModal" class="btn btn-primary">Nuevo lead</button>
+    </div>
+
+    <div id="leadListMsg" class="property-form-msg"></div>
+    <div id="leadListWrap" class="lead-list-wrap"></div>
+  </div>
+</div>
+
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.js"></script>
+  <script type="module" src="assets/js/app.js"></script>
+</body>
+</html>

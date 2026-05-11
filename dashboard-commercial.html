@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard Comercial</title>
+  <link rel="stylesheet" href="assets/css/dash.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand-block">
+        <div class="brand-mark"></div>
+        <div>
+          <div class="brand-title">Real Estate Portal</div>
+          <div class="brand-subtitle">Dashboard comercial</div>
+        </div>
+      </div>
+
+      <div class="search-block">
+        <input id="commercialSearchInput" class="search-input" placeholder="Buscar lead o propiedad..." />
+      </div>
+
+      <div class="actions-block">
+        <div id="userBadge" class="user-badge hidden"></div>
+        <a href="dash.html" class="btn btn-ghost" style="text-decoration:none;display:inline-flex;align-items:center;">Dashboard</a>
+        <a href="leads.html" class="btn btn-soft" style="text-decoration:none;display:inline-flex;align-items:center;">Pipeline</a>
+      </div>
+    </header>
+
+    <main class="commercial-shell">
+      <section class="commercial-kpis">
+        <div class="commercial-kpi-card">
+          <div class="commercial-kpi-label">Leads totales</div>
+          <div id="kpiTotalLeads" class="commercial-kpi-value">0</div>
+        </div>
+
+        <div class="commercial-kpi-card">
+          <div class="commercial-kpi-label">Nuevos</div>
+          <div id="kpiNewLeads" class="commercial-kpi-value">0</div>
+        </div>
+
+        <div class="commercial-kpi-card">
+          <div class="commercial-kpi-label">Visitas</div>
+          <div id="kpiVisits" class="commercial-kpi-value">0</div>
+        </div>
+
+        <div class="commercial-kpi-card">
+          <div class="commercial-kpi-label">Ofertas</div>
+          <div id="kpiOffers" class="commercial-kpi-value">0</div>
+        </div>
+
+        <div class="commercial-kpi-card">
+          <div class="commercial-kpi-label">Cierres</div>
+          <div id="kpiClosings" class="commercial-kpi-value">0</div>
+        </div>
+
+        <div class="commercial-kpi-card">
+          <div class="commercial-kpi-label">Presupuesto potencial</div>
+          <div id="kpiBudget" class="commercial-kpi-value">$0</div>
+        </div>
+      </section>
+
+      <section class="commercial-grid">
+        <div class="commercial-panel">
+          <div class="commercial-panel-head">Propiedades con más leads</div>
+          <div id="topPropertiesWrap" class="commercial-list"></div>
+        </div>
+
+        <div class="commercial-panel">
+          <div class="commercial-panel-head">Leads recientes</div>
+          <div id="recentLeadsWrap" class="commercial-list"></div>
+        </div>
+
+        <div class="commercial-panel">
+          <div class="commercial-panel-head">Resumen por etapa</div>
+          <div id="stageSummaryWrap" class="commercial-list"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="assets/js/dashboard-commercial.js"></script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Seguimiento de Leads</title>
+  <link rel="stylesheet" href="assets/css/dash.css"/>
+</head>
+
+<body>
+<div class="app-shell">
+
+<header class="topbar">
+  <div class="brand-block">
+    <div class="brand-title">Seguimiento</div>
+    <div class="brand-subtitle">Leads y tareas</div>
+  </div>
+
+  <div class="actions-block">
+    <a href="dash.html" class="btn btn-ghost">Dashboard</a>
+    <a href="leads.html" class="btn btn-soft">Pipeline</a>
+  </div>
+</header>
+
+<main class="followups-shell">
+
+  <div class="follow-col">
+    <div class="follow-head red">Vencidos</div>
+    <div id="col-overdue"></div>
+  </div>
+
+  <div class="follow-col">
+    <div class="follow-head yellow">Hoy</div>
+    <div id="col-today"></div>
+  </div>
+
+  <div class="follow-col">
+    <div class="follow-head green">Próximos</div>
+    <div id="col-future"></div>
+  </div>
+
+</main>
+
+</div>
+
+<script type="module" src="assets/js/followups.js"></script>
+</body>
+</html>

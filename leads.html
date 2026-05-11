@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Leads Pipeline</title>
+  <link rel="stylesheet" href="assets/css/dash.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand-block">
+        <div class="brand-mark"></div>
+        <div>
+          <div class="brand-title">Real Estate Portal</div>
+          <div class="brand-subtitle">Pipeline comercial</div>
+        </div>
+      </div>
+
+      <div class="search-block">
+        <input id="leadSearchInput" class="search-input" placeholder="Buscar lead, propiedad o teléfono..." />
+      </div>
+
+      <div class="actions-block">
+        <div id="userBadge" class="user-badge hidden"></div>
+        <a href="dash.html" class="btn btn-ghost" style="text-decoration:none;display:inline-flex;align-items:center;">Dashboard</a>
+      </div>
+    </header>
+
+    <main class="pipeline-shell">
+      <div class="pipeline-col">
+        <div class="pipeline-head">Nuevo</div>
+        <div id="col-nuevo" class="pipeline-dropzone"></div>
+      </div>
+
+      <div class="pipeline-col">
+        <div class="pipeline-head">Contactado</div>
+        <div id="col-contactado" class="pipeline-dropzone"></div>
+      </div>
+
+      <div class="pipeline-col">
+        <div class="pipeline-head">Visita</div>
+        <div id="col-visita" class="pipeline-dropzone"></div>
+      </div>
+
+      <div class="pipeline-col">
+        <div class="pipeline-head">Oferta</div>
+        <div id="col-oferta" class="pipeline-dropzone"></div>
+      </div>
+
+      <div class="pipeline-col">
+        <div class="pipeline-head">Cierre</div>
+        <div id="col-cierre" class="pipeline-dropzone"></div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="assets/js/leads-board.js"></script>
+</body>
+</html>
