@@ -10,7 +10,9 @@ export function closeGalleryAdminModal() {
 
 export function setGalleryAdminMessage(message, isError = false) {
   const el = $("galleryAdminMsg");
+
   if (!el) return;
+
   el.textContent = message;
   el.style.color = isError ? "#c73636" : "#11b67a";
 }
@@ -20,17 +22,27 @@ export function getGalleryAdminFiles() {
 }
 
 export function clearGalleryAdminInput() {
-  if ($("galleryAdminInput")) $("galleryAdminInput").value = "";
+  const input = $("galleryAdminInput");
+
+  if (input) {
+    input.value = "";
+  }
 }
 
 export function renderGalleryAdmin(items = [], handlers = {}) {
   const el = $("galleryAdminGrid");
+
   if (!el) return;
 
   el.innerHTML = "";
 
   if (!items.length) {
-    el.innerHTML = `<div class="empty-state">No hay imágenes en esta propiedad.</div>`;
+    el.innerHTML = `
+      <div class="empty-state">
+        No hay archivos multimedia en esta propiedad.
+      </div>
+    `;
+
     return;
   }
 
@@ -38,73 +50,73 @@ export function renderGalleryAdmin(items = [], handlers = {}) {
     const card = document.createElement("div");
     card.className = "gallery-admin-card";
 
+    const isVideo = item.media_type === "video";
+
+    const mediaHtml = isVideo
+      ? `
+        <video
+          class="gallery-admin-image gallery-admin-video"
+          src="${item.image_url}"
+          controls
+          muted
+          preload="metadata"
+          playsinline
+        ></video>
+      `
+      : `
+        <div
+          class="gallery-admin-image"
+          style="background-image: url('${item.image_url}')"
+        ></div>
+      `;
+
+    const coverButtonHtml = isVideo
+      ? `
+        <span class="gallery-admin-badge">
+          Video
+        </span>
+      `
+      : `
+        <button
+          class="btn btn-soft btn-set-cover"
+          type="button"
+        >
+          Usar como portada
+        </button>
+      `;
+
     card.innerHTML = `
-      const mediaHtml =
-item.media_type === "video"
+      ${mediaHtml}
 
-?
-
-`
-<video
-    class="gallery-admin-image"
-    controls
-    preload="metadata">
-
-    <source
-        src="${item.image_url}"
-        type="video/mp4">
-
-</video>
-`
-
-:
-
-`
-<div
-    class="gallery-admin-image"
-    style="background-image:url('${item.image_url}')">
-</div>
-`;
-
-card.innerHTML = `
-${mediaHtml}
-
-<div class="gallery-admin-actions">
-
-${item.is_cover
-? `<span class="gallery-admin-badge">Portada</span>`
-: ""}
-
-<button
-class="btn btn-soft btn-set-cover">
-
-Usar como portada
-
-</button>
-
-<button
-class="btn btn-ghost btn-delete-image">
-
-Eliminar
-
-</button>
-
-</div>
-`;
       <div class="gallery-admin-actions">
-        ${item.is_cover ? `<span class="gallery-admin-badge">Portada</span>` : ""}
-        <button class="btn btn-soft btn-set-cover" type="button">Usar como portada</button>
-        <button class="btn btn-ghost btn-delete-image" type="button">Eliminar foto</button>
+        ${
+          item.is_cover
+            ? `<span class="gallery-admin-badge">Portada</span>`
+            : ""
+        }
+
+        ${coverButtonHtml}
+
+        <button
+          class="btn btn-ghost btn-delete-image"
+          type="button"
+        >
+          Eliminar
+        </button>
       </div>
     `;
 
-    card.querySelector(".btn-set-cover")?.addEventListener("click", () => {
-      handlers.onSetCover?.(item);
-    });
+    card
+      .querySelector(".btn-set-cover")
+      ?.addEventListener("click", () => {
+        handlers.onSetCover?.(item);
+      });
 
-    card.querySelector(".btn-delete-image")?.addEventListener("click", () => {
-      handlers.onDelete?.(item);
-    });
+    card
+      .querySelector(".btn-delete-image")
+      ?.addEventListener("click", () => {
+        handlers.onDelete?.(item);
+      });
 
     el.appendChild(card);
   });
