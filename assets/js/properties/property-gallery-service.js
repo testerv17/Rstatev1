@@ -2,27 +2,49 @@ import { sb } from "../core/supabase.js";
 import { uploadPropertyImage, getPropertyImageUrl } from "./property-images-service.js";
 
 export async function uploadMultiplePropertyImages(files, userId) {
+
   const validFiles = Array.from(files || []).filter(Boolean);
-  const uploadedPaths = [];
+
+  const uploadedFiles = [];
 
   for (const file of validFiles) {
+
     const filePath = await uploadPropertyImage(file, userId);
-    if (filePath) uploadedPaths.push(filePath);
+
+    if (!filePath) continue;
+
+    uploadedFiles.push({
+
+      image_url: filePath,
+
+      media_type: file.type.startsWith("video/")
+          ? "video"
+          : "image"
+
+    });
+
   }
 
-  return uploadedPaths;
+  return uploadedFiles;
+
 }
 
 export async function savePropertyGallery(propertyId, imagePaths = []) {
   if (!propertyId || !imagePaths.length) return [];
 
-  const rows = imagePaths.map((path, index) => ({
-    property_id: propertyId,
-    image_url: path,
-    sort_order: index,
-    is_cover: index === 0
-  }));
+  const rows = imagePaths.map((media, index) => ({
 
+    property_id: propertyId,
+
+    image_url: media.image_url,
+
+    media_type: media.media_type,
+
+    sort_order: index,
+
+    is_cover: index===0
+
+}));
   const { data, error } = await sb
     .from("property_images")
     .insert(rows)
@@ -70,12 +92,19 @@ export async function appendPropertyGallery(propertyId, files = []) {
 
   const startOrder = existing.length;
 
-  const rows = uploadedPaths.map((path, index) => ({
-    property_id: propertyId,
-    image_url: path,
-    sort_order: startOrder + index,
-    is_cover: false
-  }));
+ const rows = uploadedPaths.map((media,index)=>({
+
+    property_id:propertyId,
+
+    image_url:media.image_url,
+
+    media_type:media.media_type,
+
+    sort_order:startOrder+index,
+
+    is_cover:false
+
+}));
 
   const { data, error } = await sb
     .from("property_images")
