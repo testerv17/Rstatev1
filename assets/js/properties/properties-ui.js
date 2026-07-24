@@ -89,7 +89,67 @@ const firstMedia = gallery[0] || {
   target.innerHTML = `
     <button class="detail-close" id="btnCloseDetail">×</button>
 
-    <div class="detail-cover gallery-main" id="detailMainImage" style="background-image:url('${escapeAttr(mainImage)}')">
+   <div class="detail-cover gallery-main" id="detailMainImage">
+
+${
+firstMedia.media_type === "video"
+
+?
+
+`
+<video
+    id="galleryMainVideo"
+    controls
+    muted
+    autoplay
+    playsinline
+    style="
+        width:100%;
+        height:100%;
+        object-fit:cover;
+        border-radius:20px;
+    ">
+
+<source
+src="${escapeAttr(firstMedia.image_url)}"
+type="video/mp4">
+
+</video>
+`
+
+:
+
+`
+<img
+id="galleryMainPhoto"
+src="${escapeAttr(firstMedia.image_url)}"
+
+style="
+width:100%;
+height:100%;
+object-fit:cover;
+border-radius:20px;
+">
+`
+}
+
+${
+gallery.length>1
+
+?
+
+`
+<button class="gallery-nav prev" id="galleryPrev">‹</button>
+
+<button class="gallery-nav next" id="galleryNext">›</button>
+`
+
+:
+
+""
+}
+
+</div>
       ${gallery.length > 1 ? `
         <button class="gallery-nav prev" id="galleryPrev">‹</button>
         <button class="gallery-nav next" id="galleryNext">›</button>
@@ -99,13 +159,48 @@ const firstMedia = gallery[0] || {
     <div class="detail-shell">
       ${gallery.length ? `
         <div class="gallery-thumbs" id="galleryThumbs">
-          ${gallery.map((img, index) => `
-            <div
-              class="gallery-thumb ${index === 0 ? "active" : ""}"
-              data-index="${index}"
-              style="background-image:url('${escapeAttr(img.image_url)}')"
-            ></div>
-          `).join("")}
+          ${gallery.map((img,index)=>`
+
+<div
+class="gallery-thumb ${index===0?"active":""}"
+data-index="${index}"
+
+style="
+background-image:url('${escapeAttr(img.image_url)}');
+position:relative;
+">
+
+${
+img.media_type==="video"
+
+?
+
+`
+<div
+style="
+position:absolute;
+inset:0;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:24px;
+background:rgba(0,0,0,.25);
+color:white;
+">
+
+▶
+
+</div>
+`
+
+:
+
+""
+}
+
+</div>
+
+`).join("")}
         </div>
       ` : ""}
 
@@ -178,38 +273,155 @@ $("btnManageLeads")?.addEventListener("click", () => {
   bindGalleryInteractions(gallery);
 }
 
-function bindGalleryInteractions(gallery) {
-  if (!gallery.length) return;
+function bindGalleryInteractions(gallery){
 
-  let currentIndex = 0;
-  const main = $("detailMainImage");
-  const thumbs = Array.from(document.querySelectorAll(".gallery-thumb"));
+    if(!gallery.length) return;
 
-  const updateMain = (index) => {
-    currentIndex = index;
-    const image = gallery[currentIndex]?.image_url || "";
-    if (main) {
-      main.style.backgroundImage = `url('${image}')`;
+    let currentIndex=0;
+
+    const main=$("detailMainImage");
+
+    const thumbs=
+    Array.from(document.querySelectorAll(".gallery-thumb"));
+
+    function renderMedia(index){
+
+        currentIndex=index;
+
+        const media=
+        gallery[currentIndex];
+
+        if(!main) return;
+
+        if(media.media_type==="video"){
+
+            main.innerHTML=`
+
+<video
+controls
+autoplay
+muted
+playsinline
+
+style="
+width:100%;
+height:100%;
+object-fit:cover;
+border-radius:20px;
+">
+
+<source
+src="${media.image_url}"
+type="video/mp4">
+
+</video>
+
+${
+gallery.length>1
+
+?
+
+`
+<button class="gallery-nav prev" id="galleryPrev">‹</button>
+
+<button class="gallery-nav next" id="galleryNext">›</button>
+`
+
+:
+
+""
+}
+
+`;
+
+        }else{
+
+            main.innerHTML=`
+
+<img
+
+src="${media.image_url}"
+
+style="
+width:100%;
+height:100%;
+object-fit:cover;
+border-radius:20px;
+">
+
+${
+gallery.length>1
+
+?
+
+`
+<button class="gallery-nav prev" id="galleryPrev">‹</button>
+
+<button class="gallery-nav next" id="galleryNext">›</button>
+`
+
+:
+
+""
+}
+
+`;
+
+        }
+
+        thumbs.forEach((thumb,i)=>{
+
+            thumb.classList.toggle(
+                "active",
+                i===currentIndex
+            );
+
+        });
+
+        bindNav();
+
     }
 
-    thumbs.forEach((thumb, i) => {
-      thumb.classList.toggle("active", i === currentIndex);
+    function bindNav(){
+
+        $("galleryPrev")?.addEventListener("click",()=>{
+
+            renderMedia(
+
+                currentIndex===0
+                ? gallery.length-1
+                : currentIndex-1
+
+            );
+
+        });
+
+        $("galleryNext")?.addEventListener("click",()=>{
+
+            renderMedia(
+
+                currentIndex===gallery.length-1
+                ? 0
+                : currentIndex+1
+
+            );
+
+        });
+
+    }
+
+    thumbs.forEach((thumb,i)=>{
+
+        thumb.addEventListener("click",()=>{
+
+            renderMedia(i);
+
+        });
+
     });
-  };
 
-  thumbs.forEach((thumb, i) => {
-    thumb.addEventListener("click", () => updateMain(i));
-  });
+    bindNav();
 
-  $("galleryPrev")?.addEventListener("click", () => {
-    const nextIndex = currentIndex === 0 ? gallery.length - 1 : currentIndex - 1;
-    updateMain(nextIndex);
-  });
-
-  $("galleryNext")?.addEventListener("click", () => {
-    const nextIndex = currentIndex === gallery.length - 1 ? 0 : currentIndex + 1;
-    updateMain(nextIndex);
-  });
 }
 
 export function renderEmptyPropertyDetail() {
