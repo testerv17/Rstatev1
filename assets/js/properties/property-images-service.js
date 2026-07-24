@@ -4,6 +4,7 @@ export async function uploadPropertyImage(file, userId) {
   if (!file) return null;
 
   const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
+  const isVideo = file.type.startsWith("video/");
   const safeExt = ext.replace(/[^a-z0-9]/g, "") || "jpg";
   const fileName = `property_${userId}_${Date.now()}.${safeExt}`;
   const filePath = `covers/${fileName}`;
