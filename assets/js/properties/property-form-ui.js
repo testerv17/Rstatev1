@@ -41,18 +41,46 @@ export function bindPropertyImagePreview() {
 }
 
 export function renderPropertyImagePreview(files = []) {
+
   const el = $("propImagePreview");
   if (!el) return;
 
   el.innerHTML = "";
 
   files.forEach((file) => {
+
     const url = URL.createObjectURL(file);
-    const div = document.createElement("div");
-    div.className = "property-upload-thumb";
-    div.style.backgroundImage = `url('${url}')`;
-    el.appendChild(div);
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "property-upload-thumb";
+
+    if (file.type.startsWith("video/")) {
+
+      wrapper.innerHTML = `
+        <video
+            src="${url}"
+            muted
+            controls
+            preload="metadata"
+            style="
+                width:100%;
+                height:100%;
+                object-fit:cover;
+                border-radius:12px;
+            ">
+        </video>
+      `;
+
+    } else {
+
+      wrapper.style.backgroundImage = `url('${url}')`;
+
+    }
+
+    el.appendChild(wrapper);
+
   });
+
 }
 
 export function clearPropertyForm() {
