@@ -55,14 +55,36 @@ export async function createProperty(payload) {
   // Guardar galería completa
   if (files.length > 0) {
     const remainingFiles = files.slice(1);
-    const remainingPaths = remainingFiles.length
-      ? await uploadMultiplePropertyImages(remainingFiles, user.id)
-      : [];
+  const remainingMedia =
+remainingFiles.length
+? await uploadMultiplePropertyImages(
+remainingFiles,
+user.id
+)
+: [];
 
-    const allPaths = [
-      ...(coverPath ? [coverPath] : []),
-      ...remainingPaths
-    ];
+const allMedia = [];
+
+if(coverPath){
+
+    allMedia.push({
+
+        image_url:coverPath,
+
+        media_type:files[0]?.type.startsWith("video/")
+            ? "video"
+            : "image"
+
+    });
+
+}
+
+allMedia.push(...remainingMedia);
+
+await savePropertyGallery(
+data.id,
+allMedia
+);
 
     console.log("gallery paths to save:", allPaths);
 
