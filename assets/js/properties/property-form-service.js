@@ -1,18 +1,30 @@
 import { sb } from "../core/supabase.js";
 import { uploadPropertyImage } from "./property-images-service.js";
-import { uploadMultiplePropertyImages, savePropertyGallery } from "./property-gallery-service.js";
+import {
+  uploadMultiplePropertyImages,
+  savePropertyGallery
+} from "./property-gallery-service.js";
 
 export async function createProperty(payload) {
-  const { data: { user }, error: userError } = await sb.auth.getUser();
+  const {
+    data: { user },
+    error: userError
+  } = await sb.auth.getUser();
 
   if (userError) throw userError;
   if (!user) throw new Error("Primero inicia sesión.");
 
-  const files = Array.isArray(payload.imageFiles) ? payload.imageFiles : [];
+  const files = Array.isArray(payload.imageFiles)
+    ? payload.imageFiles
+    : [];
 
   let coverPath = null;
 
-  // Primera imagen = portada
+  /*
+   * El primer archivo se guarda como portada.
+   * Puede ser imagen o video, aunque para las tarjetas
+   * conviene que el primer archivo sea una imagen.
+   */
   if (files.length > 0) {
     coverPath = await uploadPropertyImage(files[0], user.id);
   }
@@ -52,44 +64,47 @@ export async function createProperty(payload) {
 
   console.log("property inserted:", data);
 
-  // Guardar galería completa
+  /*
+   * Guardar todos los archivos en property_images.
+   * El primer archivo ya se subió como portada.
+   * Los archivos restantes se suben en este punto.
+   */
   if (files.length > 0) {
     const remainingFiles = files.slice(1);
-  const remainingMedia =
-remainingFiles.length
-? await uploadMultiplePropertyImages(
-remainingFiles,
-user.id
-)
-: [];
 
-const allMedia = [];
+    const remainingMedia = remainingFiles.length
+      ? await uploadMultiplePropertyImages(
+          remainingFiles,
+          user.id
+        )
+      : [];
 
-if(coverPath){
+    const allMedia = [];
 
-    allMedia.push({
+    /*
+     * Agregar el primer archivo al arreglo multimedia.
+     */
+    if (coverPath) {
+      allMedia.push({
+        image_url: coverPath,
+        media_type: files[0]?.type?.startsWith("video/")
+          ? "video"
+          : "image"
+      });
+    }
 
-        image_url:coverPath,
+    /*
+     * Agregar los demás archivos subidos.
+     */
+    allMedia.push(...remainingMedia);
 
-        media_type:files[0]?.type.startsWith("video/")
-            ? "video"
-            : "image"
+    console.log("gallery media to save:", allMedia);
 
-    });
-
-}
-
-allMedia.push(...remainingMedia);
-
-await savePropertyGallery(
-data.id,
-allMedia
-);
-
-    console.log("gallery paths to save:", allPaths);
-
-    if (allPaths.length) {
-      await savePropertyGallery(data.id, allPaths);
+    /*
+     * Guardar registros en property_images.
+     */
+    if (allMedia.length > 0) {
+      await savePropertyGallery(data.id, allMedia);
     }
   }
 
