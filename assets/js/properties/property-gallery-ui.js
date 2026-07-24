@@ -39,7 +39,58 @@ export function renderGalleryAdmin(items = [], handlers = {}) {
     card.className = "gallery-admin-card";
 
     card.innerHTML = `
-      <div class="gallery-admin-image" style="background-image:url('${item.image_url}')"></div>
+      const mediaHtml =
+item.media_type === "video"
+
+?
+
+`
+<video
+    class="gallery-admin-image"
+    controls
+    preload="metadata">
+
+    <source
+        src="${item.image_url}"
+        type="video/mp4">
+
+</video>
+`
+
+:
+
+`
+<div
+    class="gallery-admin-image"
+    style="background-image:url('${item.image_url}')">
+</div>
+`;
+
+card.innerHTML = `
+${mediaHtml}
+
+<div class="gallery-admin-actions">
+
+${item.is_cover
+? `<span class="gallery-admin-badge">Portada</span>`
+: ""}
+
+<button
+class="btn btn-soft btn-set-cover">
+
+Usar como portada
+
+</button>
+
+<button
+class="btn btn-ghost btn-delete-image">
+
+Eliminar
+
+</button>
+
+</div>
+`;
       <div class="gallery-admin-actions">
         ${item.is_cover ? `<span class="gallery-admin-badge">Portada</span>` : ""}
         <button class="btn btn-soft btn-set-cover" type="button">Usar como portada</button>
