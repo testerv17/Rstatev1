@@ -74,9 +74,17 @@ export function renderPropertyDetail(property, handlers = {}) {
 
   const gallery = Array.isArray(property.gallery) && property.gallery.length
     ? property.gallery
-    : (property.cover_url ? [{ image_url: property.cover_url }] : []);
+    : (property.cover_url
+        ? [{
+            image_url: property.cover_url,
+            media_type: "image"
+          }]
+        : []);
 
-  const mainImage = gallery[0]?.image_url || defaultCover();
+const firstMedia = gallery[0] || {
+    image_url: defaultCover(),
+    media_type: "image"
+};
 
   target.innerHTML = `
     <button class="detail-close" id="btnCloseDetail">×</button>
