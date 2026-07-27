@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b0c0f" />
+  <title>Property Experience</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/css/property-mobile.css" />
+</head>
+
+<body>
+  <main id="app" class="app-shell">
+    <section class="hero" id="inicio">
+      <div class="hero-media">
+        <img id="heroImage" alt="Propiedad" />
+        <video id="heroVideo" muted playsinline loop preload="metadata"></video>
+        <div class="hero-gradient"></div>
+      </div>
+
+      <header class="topbar">
+        <button class="icon-btn" type="button" aria-label="Regresar" onclick="history.back()">
+          <span>←</span>
+        </button>
+        <div class="topbar-actions">
+          <button id="favoriteBtn" class="icon-btn" type="button" aria-label="Guardar">♡</button>
+          <button id="shareBtn" class="icon-btn" type="button" aria-label="Compartir">↗</button>
+        </div>
+      </header>
+
+      <div class="hero-copy">
+        <div class="pill" id="listingType">VENTA</div>
+        <h1 id="propertyTitle">Cargando propiedad…</h1>
+        <p id="propertyLocation" class="hero-location"></p>
+        <div class="hero-price" id="propertyPrice"></div>
+
+        <div class="hero-stats">
+          <div><strong id="heroBeds">—</strong><span>Rec.</span></div>
+          <div><strong id="heroBaths">—</strong><span>Baños</span></div>
+          <div><strong id="heroArea">—</strong><span>m²</span></div>
+        </div>
+      </div>
+
+      <a href="#descubre" class="scroll-cue">
+        <span>Descubre</span>
+        <span class="scroll-arrow">⌄</span>
+      </a>
+    </section>
+
+    <section class="content" id="descubre">
+      <div class="section-heading">
+        <span class="eyebrow">EXPERIENCIA</span>
+        <h2>Conoce cada detalle.</h2>
+        <p>Explora la propiedad como si estuvieras ahí.</p>
+      </div>
+
+      <div class="feature-grid">
+        <button class="feature-card feature-card--large" data-action="gallery">
+          <img id="galleryCover" alt="" />
+          <span class="feature-overlay"></span>
+          <span class="feature-copy">
+            <small>GALERÍA</small>
+            <strong>Explorar espacios</strong>
+            <em id="galleryCount">0 fotos</em>
+          </span>
+        </button>
+
+        <button class="feature-card" data-action="video">
+          <img id="videoCover" alt="" />
+          <span class="feature-overlay"></span>
+          <span class="feature-copy">
+            <small>VIDEO</small>
+            <strong>Recorrido</strong>
+            <em>▶ Reproducir</em>
+          </span>
+        </button>
+
+        <button class="feature-card feature-card--accent" data-action="tour360">
+          <span class="orb">360°</span>
+          <span class="feature-copy">
+            <small>TOUR VIRTUAL</small>
+            <strong>Entra a la propiedad</strong>
+            <em>Explorar ahora</em>
+          </span>
+        </button>
+      </div>
+    </section>
+
+    <section class="content">
+      <div class="section-heading">
+        <span class="eyebrow">ESPACIOS</span>
+        <h2>Explora por ambiente.</h2>
+      </div>
+      <div id="spaceRail" class="space-rail"></div>
+    </section>
+
+    <section class="content facts-section">
+      <div class="section-heading">
+        <span class="eyebrow">LA PROPIEDAD</span>
+        <h2>Diseñada para vivirla.</h2>
+      </div>
+
+      <div class="facts-grid">
+        <article class="fact-card"><strong id="factConstruction">—</strong><span>m² construcción</span></article>
+        <article class="fact-card"><strong id="factLand">—</strong><span>m² terreno</span></article>
+        <article class="fact-card"><strong id="factBeds">—</strong><span>recámaras</span></article>
+        <article class="fact-card"><strong id="factBaths">—</strong><span>baños</span></article>
+      </div>
+
+      <p id="propertyDescription" class="description"></p>
+    </section>
+
+    <section class="content">
+      <div class="section-heading">
+        <span class="eyebrow">AMENIDADES</span>
+        <h2>Todo lo que suma valor.</h2>
+      </div>
+      <div id="amenities" class="amenities"></div>
+    </section>
+
+    <section class="content location-card-wrap">
+      <article class="location-card">
+        <div>
+          <span class="eyebrow">UBICACIÓN</span>
+          <h2 id="locationTitle">Monterrey, Nuevo León</h2>
+          <p id="locationAddress"></p>
+        </div>
+        <button id="mapBtn" class="secondary-btn">Ver ubicación</button>
+      </article>
+    </section>
+
+    <section class="content contact-section">
+      <div class="contact-card">
+        <span class="eyebrow">¿TE INTERESA?</span>
+        <h2>Agenda un recorrido privado.</h2>
+        <p>Déjanos tus datos y te contactamos para coordinar una visita.</p>
+
+        <form id="leadForm">
+          <input id="leadName" autocomplete="name" placeholder="Nombre" required />
+          <input id="leadPhone" autocomplete="tel" placeholder="Teléfono" />
+          <input id="leadEmail" type="email" autocomplete="email" placeholder="Correo" />
+          <textarea id="leadNotes" rows="3" placeholder="¿Qué te gustaría conocer?"></textarea>
+          <button class="primary-btn" type="submit">Solicitar visita</button>
+          <p id="leadMsg" class="form-msg"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <nav class="floating-nav" aria-label="Navegación principal">
+    <a href="#inicio"><span>⌂</span><small>Inicio</small></a>
+    <button data-action="gallery"><span>▣</span><small>Fotos</small></button>
+    <button data-action="tour360" class="nav-main"><span>360°</span><small>Tour</small></button>
+    <button data-action="video"><span>▶</span><small>Video</small></button>
+    <a href="#leadForm"><span>✦</span><small>Visita</small></a>
+  </nav>
+
+  <div class="sticky-cta">
+    <div>
+      <small>Precio</small>
+      <strong id="stickyPrice">—</strong>
+    </div>
+    <a href="#leadForm">Agendar visita</a>
+  </div>
+
+  <dialog id="mediaDialog" class="media-dialog">
+    <button id="closeDialog" class="dialog-close" aria-label="Cerrar">×</button>
+    <div id="dialogContent" class="dialog-content"></div>
+  </dialog>
+
+  <script type="module" src="./assets/js/property-mobile.js"></script>
+</body>
+</html>
